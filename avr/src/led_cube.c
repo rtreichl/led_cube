@@ -16,17 +16,18 @@
 #include <include/tlc.h>
 #include <include/btm222.h>
 #include <avr/pgmspace.h>
+#include <include/animation.h>
 #define UART1_BAUD_RATE      19200
 #define UART_BAUD_RATE     115200
 
-extern cube data2;
+//extern cube data2;
 
 volatile uint8_t count2 = 0;
 
 int main(void)
 {
     unsigned int c = 0, c1 = 0;
-    unsigned char count = 1, d = 0;
+    unsigned char count = 0, d = 0;
     TCCR0A = (1 << COM0B1) | (1 << WGM00);
     TCCR0B = (1 << CS02);// | (1 << CS00);
     TCCR2A = (1 << WGM21);
@@ -39,22 +40,21 @@ int main(void)
     btm222_init();
     uart1_init( UART_BAUD_SELECT(UART1_BAUD_RATE,F_CPU) );
     sei();
-    
+    static cube data = {{0}};
+	
     tlc_init();
-		
-	cube *v_data = 0;
-	v_data = &data2;
 		
     uart_puts("ATI0\r");
     uart1_puts("Hallo UART");
     while(1)
     {
-        tlc_put(v_data+count);
+        tlc_put(&data);
         if (count2 >= 40)
         {
             PORTB ^= 1;
             count2 = 0;
-            if (count == 31)
+			cube_expand(&data, count, 0);
+            if (count == 7)
             {
 				
                 d = 1;

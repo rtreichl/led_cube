@@ -12,7 +12,7 @@
 #include <avr/pgmspace.h>
 
 
-void tlc_put(cube *v_data) {
+void tlc_put(cube *data) {
     
     unsigned int mask = 0;
     unsigned char out = 0;
@@ -22,17 +22,17 @@ void tlc_put(cube *v_data) {
     {
         --z;
         for(mask = 0x8000; mask != 0; mask >>= 1) {
-			if(pgm_read_word(&(v_data->layer_d[z].tlc[0])) & mask) {
+			if(data->layer_d[z].tlc[0] & mask) {
                 out |= (TLC_HIGH << TLC_1_SDA);
             }
-            if(pgm_read_word(&(v_data->layer_d[z].tlc[1])) & mask) {
+            if(data->layer_d[z].tlc[1] & mask) {
                 out |= (TLC_HIGH << TLC_2_SDA);
             }
 
-            if(pgm_read_word(&(v_data->layer_d[z].tlc[2])) & mask) {
+            if(data->layer_d[z].tlc[2] & mask) {
                 out |= (TLC_HIGH << TLC_3_SDA);
             }
-            if(pgm_read_word(&(v_data->layer_d[z].tlc[3])) & mask) {
+            if(data->layer_d[z].tlc[3] & mask) {
                 out |= (TLC_HIGH << TLC_4_SDA);
             }
         
