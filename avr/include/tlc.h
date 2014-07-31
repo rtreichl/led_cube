@@ -51,6 +51,7 @@ typedef union {
 } cube;
 
 void tlc_put(cube *data);
+void tlc_put_top(cube *data);
 void tlc_init();
 
 #endif /* TLC_H_ */
