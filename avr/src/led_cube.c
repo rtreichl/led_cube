@@ -26,14 +26,19 @@ volatile uint8_t count2 = 0;
 
 int main(void)
 {
+    void (*funcPtr) (cube *);
     unsigned int c = 0, c1 = 0;
-    unsigned char count = 0, d = 0;
+    unsigned char count = 0, d = 0, t = 0;
+    unsigned char progamm = 0;
+
+    funcPtr = tlc_put;
+
     TCCR0A = (1 << COM0B1) | (1 << WGM00);
     TCCR0B = (1 << CS02);// | (1 << CS00);
     TCCR2A = (1 << WGM21);
     TCCR2B =  (1 << CS22) | (1 << CS21) | (1 << CS20);
     TIMSK2 = (1 << OCIE2A);
-    OCR2A = 0x3F;
+    OCR2A = 0x2F;
     OCR0B = 0x0A;
     DDRB |= (1 << PINB4) | (1 << PINB0);
     _delay_ms(1000);
@@ -48,15 +53,38 @@ int main(void)
     uart1_puts("Hallo UART");
     while(1)
     {
-        tlc_put(&data);
+        funcPtr(&data);
         if (count2 >= 40)
         {
             PORTB ^= 1;
             count2 = 0;
-			cube_expand(&data, count, 0);
+            switch(progamm) {
+            case 0:
+                cube_expand_1(&data, &count, 0); 
+                break;
+            case 1:
+                cube_expand_2(&data, &count, 0); 
+                break;
+            case 2:
+                cube_expand_3(&data, &count, 0); 
+                break;
+            case 3:
+                cube_expand_4(&data, &count, 0); 
+                break;
+            default:
+                if(t) {
+                    funcPtr = tlc_put;
+                }
+                else {
+                    funcPtr = tlc_put_top;
+                }
+                t ^= 1;
+                progamm = 0;
+            }
+            //cube_expand_3(&data, &count, 0);
             if (count == 7)
             {
-				
+				progamm++;
                 d = 1;
             }
             if (count == 0)
