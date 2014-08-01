@@ -30,6 +30,7 @@ int main(void)
     unsigned int c = 0, c1 = 0;
     unsigned char count = 0, d = 0, t = 0;
     unsigned char progamm = 0;
+    static uint8_t animation_tmp = 0;
 
     funcPtr = tlc_put;
 
@@ -38,7 +39,7 @@ int main(void)
     TCCR2A = (1 << WGM21);
     TCCR2B =  (1 << CS22) | (1 << CS21) | (1 << CS20);
     TIMSK2 = (1 << OCIE2A);
-    OCR2A = 0x2F;
+    OCR2A = 0x3F;
     OCR0B = 0x0A;
     DDRB |= (1 << PINB4) | (1 << PINB0);
     _delay_ms(1000);
@@ -60,32 +61,46 @@ int main(void)
             count2 = 0;
             switch(progamm) {
             case 0:
-                cube_expand_1(&data, &count, 0); 
+                cube_expand_1(&data, &count, &animation_tmp, 0); 
                 break;
             case 1:
-                cube_expand_2(&data, &count, 0); 
+                cube_expand_2(&data, &count, &animation_tmp, 0); 
                 break;
             case 2:
-                cube_expand_3(&data, &count, 0); 
+                cube_expand_3(&data, &count, &animation_tmp, 0); 
                 break;
             case 3:
-                cube_expand_4(&data, &count, 0); 
+                cube_expand_4(&data, &count, &animation_tmp, 0); 
+                break;
+            case 4:
+                cube_layer_shift_front_back(&data, &count, &animation_tmp, 0);
+                break;
+            case 5:
+                cube_layer_shift_left_right(&data, &count, &animation_tmp, 0);
+                break;
+            case 6:
+                cube_layer_shift_top_bottom(&data, &count, &animation_tmp, 0);
+                break;
+             case 7:
+                cube_rocket_explode(&data, &count, &animation_tmp, 0);
                 break;
             default:
                 if(t) {
-                    funcPtr = tlc_put;
+                    //funcPtr = tlc_put;
                 }
                 else {
-                    funcPtr = tlc_put_top;
+                    //funcPtr = tlc_put_top;
                 }
                 t ^= 1;
+                count2 = 40;
                 progamm = 0;
             }
-            //cube_expand_3(&data, &count, 0);
-            if (count == 7)
+            //cube_explosion(&data, &count, &animation_tmp, 0);
+            if (count == 15)
             {
 				progamm++;
                 d = 1;
+                count = 0;
             }
             if (count == 0)
             {
