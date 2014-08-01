@@ -19,6 +19,7 @@
 #include <include/animation.h>
 #define UART1_BAUD_RATE      19200
 #define UART_BAUD_RATE     115200
+#define NUM(a) (sizeof(a) / sizeof(*a))
 
 //extern cube data2;
 
@@ -27,12 +28,15 @@ volatile uint8_t count2 = 0;
 int main(void)
 {
     void (*funcPtr) (cube *);
+	unsigned int (*funcPtrProgram[])(cube *, uint8_t *count, uint8_t *tmp, uint8_t *time) = { cube_expand_1,cube_expand_2,cube_expand_3,cube_expand_4 };
+	unsigned int ActProg = 0;
     unsigned int c = 0, c1 = 0;
     unsigned char count = 0, d = 0, t = 0;
     unsigned char progamm = 0;
     static uint8_t animation_tmp = 0;
 
     funcPtr = tlc_put;
+	
 
     TCCR0A = (1 << COM0B1) | (1 << WGM00);
     TCCR0B = (1 << CS02);// | (1 << CS00);
@@ -59,44 +63,28 @@ int main(void)
         {
             PORTB ^= 1;
             count2 = 0;
-            switch(progamm) {
-            case 0:
-                cube_expand_1(&data, &count, &animation_tmp, 0); 
-                break;
-            case 1:
-                cube_expand_2(&data, &count, &animation_tmp, 0); 
-                break;
-            case 2:
-                cube_expand_3(&data, &count, &animation_tmp, 0); 
-                break;
-            case 3:
-                cube_expand_4(&data, &count, &animation_tmp, 0); 
-                break;
-            case 4:
-                cube_layer_shift_front_back(&data, &count, &animation_tmp, 0);
-                break;
-            case 5:
-                cube_layer_shift_left_right(&data, &count, &animation_tmp, 0);
-                break;
-            case 6:
-                cube_layer_shift_top_bottom(&data, &count, &animation_tmp, 0);
-                break;
-             case 7:
-                cube_rocket_explode(&data, &count, &animation_tmp, 0);
-                break;
-            default:
-                if(t) {
-                    //funcPtr = tlc_put;
-                }
-                else {
-                    //funcPtr = tlc_put_top;
-                }
-                t ^= 1;
-                count2 = 40;
-                progamm = 0;
+			
+			if (ActProg!=NUM(funcPtrProgram))
+			{
+				ActProg += funcPtrProgram[ActProg](&data, &count, 0, 0); 
+			}
+			else
+			{
+				ActProg = 0;
+			}
+			
+			
+            if(t) {
+	            funcPtr = tlc_put;
             }
-            //cube_explosion(&data, &count, &animation_tmp, 0);
-            if (count == 15)
+            else {
+	            funcPtr = tlc_put_top;
+            }
+            t ^= 1;
+            progamm = 0;
+            
+            //cube_expand_3(&data, &count, 0);
+            if (count == 7)
             {
 				progamm++;
                 d = 1;
