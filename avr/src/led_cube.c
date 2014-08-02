@@ -28,12 +28,10 @@ volatile uint8_t count2 = 0;
 int main(void)
 {
     void (*funcPtr) (cube *);
-	unsigned int (*funcPtrProgram[])(cube *, uint8_t *count, uint8_t *tmp, uint8_t *time) = { cube_expand_1,cube_expand_2,cube_expand_3,cube_expand_4 };
-	unsigned int ActProg = 0;
+	uint8_t (*funcPtrProgram[])(cube *, uint8_t *index, uint8_t *tmp, uint8_t *time) = { cube_expand_1,cube_expand_2,cube_expand_3,cube_expand_4,cube_layer_shift_front_back,cube_layer_shift_left_right,cube_layer_shift_top_bottom, cube_rocket_explode};
     unsigned int c = 0, c1 = 0;
-    unsigned char count = 0, d = 0, t = 0;
     unsigned char progamm = 0;
-    static uint8_t animation_tmp = 0;
+    static uint8_t animation_tmp = 0, count = 0;
 
     funcPtr = tlc_put;
 	
@@ -58,50 +56,20 @@ int main(void)
     uart1_puts("Hallo UART");
     while(1)
     {
-        funcPtr(&data);
+        tlc_put(&data);
         if (count2 >= 40)
         {
             PORTB ^= 1;
             count2 = 0;
-			
-			if (ActProg!=NUM(funcPtrProgram))
+			if (progamm < NUM(funcPtrProgram))
 			{
-				ActProg += funcPtrProgram[ActProg](&data, &count, 0, 0); 
+				progamm += funcPtrProgram[progamm](&data, &count, &animation_tmp, 0); 
 			}
 			else
 			{
-				ActProg = 0;
+				progamm = 0;
+                count2 = 40;
 			}
-			
-			
-            if(t) {
-	            funcPtr = tlc_put;
-            }
-            else {
-	            funcPtr = tlc_put_top;
-            }
-            t ^= 1;
-            progamm = 0;
-            
-            //cube_expand_3(&data, &count, 0);
-            if (count == 7)
-            {
-				progamm++;
-                d = 1;
-                count = 0;
-            }
-            if (count == 0)
-            {
-                d = 0;
-            }
-            if (d)
-            {
-				count--;
-            }
-            else
-            {
-                count++;
-            }
         }
         c = uart_getc();
         if ( !(c & UART_NO_DATA) )

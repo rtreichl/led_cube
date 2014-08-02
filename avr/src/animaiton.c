@@ -11,24 +11,42 @@
 #include <stdlib.h>
 
 
-uint8_t cube_layer_shift_front_back(cube *data, uint8_t *index, uint8_t, *tmp, uint8_t *time)
+uint8_t cube_layer_shift_front_back(cube *data, uint8_t *index, uint8_t *tmp, uint8_t *time)
 {
     uint8_t model = 0x01;
     uint8_t i, j;
 
     cube_clear(data);
 
-    model <<= *index;
+    model <<= *tmp;
 
     for(j = 0; j < 8; j++) {
         for(i = 0; i < 8; i++) {
             data->layer_d[i].row[j] = model;
         }
     }
-    return 0;
+
+    if (*index < 7) {
+        (*tmp)++;
+    }
+    else {
+        (*tmp)--;
+    }
+
+    if (++*index == 15)
+    {
+        //if animation is done give one back for a step to the next animation (see readme.txt main folder!!!)
+        *index = 0;
+        *tmp = 0;
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
 }
 
-uint8_t cube_layer_shift_top_bottom(cube *data, uint8_t *index, uint8_t, *tmp, uint8_t *time)
+uint8_t cube_layer_shift_top_bottom(cube *data, uint8_t *index, uint8_t *tmp, uint8_t *time)
 {
     uint8_t model = 0xFF;
     uint8_t i;
@@ -36,41 +54,75 @@ uint8_t cube_layer_shift_top_bottom(cube *data, uint8_t *index, uint8_t, *tmp, u
     cube_clear(data);
 
     for(i = 0; i < 8; i++) {
-        data->layer_d[*index].row[i] = model;
+        data->layer_d[*tmp].row[i] = model;
     }
-    return 0;
+
+    if (*index < 7) {
+        (*tmp)++;
+    }
+    else {
+        (*tmp)--;
+    }
+
+    if (++*index == 15)
+    {
+        //if animation is done give one back for a step to the next animation (see readme.txt main folder!!!)
+        *index = 0;
+        *tmp = 0;
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
 }
 
-uint8_t cube_layer_shift_left_right(cube *data, uint8_t *index, uint8_t, *tmp, uint8_t *time)
+uint8_t cube_layer_shift_left_right(cube *data, uint8_t *index, uint8_t *tmp, uint8_t *time)
 {
     uint8_t model = 0xFF;
     uint8_t i;
 
     cube_clear(data);
     for(i = 0; i < 8; i++) {
-        data->layer_d[i].row[*index] = model;
+        data->layer_d[i].row[*tmp] = model;
     }
-    return 0;
+
+    if (*index < 7) {
+        (*tmp)++;
+    }
+    else {
+        (*tmp)--;
+    }
+
+    if (++*index == 15)
+    {
+        //if animation is done give one back for a step to the next animation (see readme.txt main folder!!!)
+        *index = 0;
+        *tmp = 0;
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
+
 }
 
-uint8_t cube_explosion(cube *data, uint8_t *index, uint8_t, *tmp, uint8_t *time)
+uint8_t cube_explosion(cube *data, uint8_t *index, uint8_t *tmp, uint8_t *time)
 {
-    uint8_t i, j, mask;
+    uint8_t i, j;
     
     cube_clear(data);
 
-    mask = 0x10 << *index | 8 >> *index;
-
     for(i = 0; i < 8; i++) {
         for(j = 0; j < 8; j++) {
-            data->layer_d[i].row[j] = /*mask &*/ rand();
+            data->layer_d[i].row[j] = rand();
         }
     }
-
-    return 0;
+    return 1;
 }
 
-uint8_t cube_rocket_explode(cube *data, uint8_t *index, uint8_t, *tmp, uint8_t *time)
+uint8_t cube_rocket_explode(cube *data, uint8_t *index, uint8_t *tmp, uint8_t *time)
 {
     cube_clear(data);
 
@@ -103,7 +155,18 @@ uint8_t cube_rocket_explode(cube *data, uint8_t *index, uint8_t, *tmp, uint8_t *
         //maybe reset not planed yet.
         break;
     }
-    return 0;
+
+    if (++*index == 16)
+    {
+        //if animation is done give one back for a step to the next animation (see readme.txt main folder!!!)
+        *index = 0;
+        *tmp = 0;
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
 }
 
 uint8_t clube_layer_rand(cube *data, uint8_t *index)
@@ -113,10 +176,10 @@ uint8_t clube_layer_rand(cube *data, uint8_t *index)
     for(i = 0; i < 8; i++) {
         data->layer_d[15 - *index].row[i] = (uint8_t)rand();
     }
-
+    return 0;
 }
 
-uint8_t cube_expand_4(cube *data, uint8_t *index, uint8_t, *tmp, uint8_t *time)
+uint8_t cube_expand_4(cube *data, uint8_t *index, uint8_t *tmp, uint8_t *time)
 {
     uint8_t i = 0;
     uint8_t model = 0x80;
@@ -124,28 +187,37 @@ uint8_t cube_expand_4(cube *data, uint8_t *index, uint8_t, *tmp, uint8_t *time)
     cube_clear(data);
 
     model = 0x80;
-    model >>= *index;
+    model >>= *tmp;
     model |= 0x80;
 
-    for (i = (*index) - 1; (int8_t)i > 0; i--)
+    for (i = (*tmp) - 1; (int8_t)i > 0; i--)
     {
         data->layer_d[0].row[7 - i] = model;
-        data->layer_d[*index].row[7 - i] = model;
+        data->layer_d[*tmp].row[7 - i] = model;
         data->layer_d[i].row[7] = model;
-        data->layer_d[i].row[7 - *index] = model;
+        data->layer_d[i].row[7 - *tmp] = model;
     }
 
     model = 0xFF;
-    model -= (1 << (7-*index) - 1);
+    model -= ((1 << (7-*tmp)) - 1);
     
-    data->layer_d[*index].row[7] = model;
-    data->layer_d[*index].row[7 - *index] = model;
+    data->layer_d[*tmp].row[7] = model;
+    data->layer_d[*tmp].row[7 - *tmp] = model;
     data->layer_d[0].row[7] = model;
-    data->layer_d[0].row[7 - *index] = model;
+    data->layer_d[0].row[7 - *tmp] = model;
 
-    if (*index == 7)
+    if (*index < 7) {
+        (*tmp)++;
+    }
+    else {
+        (*tmp)--;
+    }
+
+    if (++*index == 15)
     {
         //if animation is done give one back for a step to the next animation (see readme.txt main folder!!!)
+        *index = 0;
+        *tmp = 0;
         return 1;
     }
     else
@@ -154,7 +226,7 @@ uint8_t cube_expand_4(cube *data, uint8_t *index, uint8_t, *tmp, uint8_t *time)
     }
 }
 
-uint8_t cube_expand_3(cube *data, uint8_t *index, uint8_t, *tmp, uint8_t *time)
+uint8_t cube_expand_3(cube *data, uint8_t *index, uint8_t *tmp, uint8_t *time)
 {
     uint8_t i = 0;
     uint8_t model = 0x80;
@@ -162,28 +234,37 @@ uint8_t cube_expand_3(cube *data, uint8_t *index, uint8_t, *tmp, uint8_t *time)
     cube_clear(data);
 
     model = 0x01;
-    model <<= *index;
+    model <<= *tmp;
     model |= 0x01;
 
-    for (i = (*index) - 1; (int8_t)i > 0; i--)
+    for (i = (*tmp) - 1; (int8_t)i > 0; i--)
     {
         data->layer_d[0].row[7 - i] = model;
-        data->layer_d[*index].row[7 - i] = model;
+        data->layer_d[*tmp].row[7 - i] = model;
         data->layer_d[i].row[7] = model;
-        data->layer_d[i].row[7 - *index] = model;
+        data->layer_d[i].row[7 - *tmp] = model;
     }
 
     //model = 0xFF;
-    model = (1 << (*index + 1) - 1);
+    model = ((1 << (*tmp + 1)) - 1);
     
-    data->layer_d[*index].row[7] = model;
-    data->layer_d[*index].row[7 - *index] = model;
+    data->layer_d[*tmp].row[7] = model;
+    data->layer_d[*tmp].row[7 - *tmp] = model;
     data->layer_d[0].row[7] = model;
-    data->layer_d[0].row[7 - *index] = model;
+    data->layer_d[0].row[7 - *tmp] = model;
 
-    if (*index == 7)
+    if (*index < 7) {
+        (*tmp)++;
+    }
+    else {
+        (*tmp)--;
+    }
+
+    if (++*index == 15)
     {
         //if animation is done give one back for a step to the next animation (see readme.txt main folder!!!)
+        *index = 0;
+        *tmp = 0;
         return 1;
     }
     else
@@ -192,7 +273,7 @@ uint8_t cube_expand_3(cube *data, uint8_t *index, uint8_t, *tmp, uint8_t *time)
     }
 }
 
-uint8_t cube_expand_2(cube *data, uint8_t *index, uint8_t, *tmp, uint8_t *time)
+uint8_t cube_expand_2(cube *data, uint8_t *index, uint8_t *tmp, uint8_t *time)
 {
     uint8_t i = 0;
     uint8_t model = 0x80;
@@ -200,28 +281,37 @@ uint8_t cube_expand_2(cube *data, uint8_t *index, uint8_t, *tmp, uint8_t *time)
     cube_clear(data);
 
     model = 0x01;
-    model <<= *index;
+    model <<= *tmp;
     model |= 0x01;
 
-    for (i = 1; i < *index; i++)
+    for (i = 1; i < *tmp; i++)
     {
         data->layer_d[0].row[i] = model;
-        data->layer_d[*index].row[i] = model;
+        data->layer_d[*tmp].row[i] = model;
         data->layer_d[i].row[0] = model;
-        data->layer_d[i].row[*index] = model;
+        data->layer_d[i].row[*tmp] = model;
     }
 
     //model = 0xFF;
-    model = (1 << (*index + 1) - 1);
+    model = ((1 << (*tmp + 1)) - 1);
     
-    data->layer_d[*index].row[0] = model;
-    data->layer_d[*index].row[*index] = model;
+    data->layer_d[*tmp].row[0] = model;
+    data->layer_d[*tmp].row[*tmp] = model;
     data->layer_d[0].row[0] = model;
-    data->layer_d[0].row[*index] = model;
+    data->layer_d[0].row[*tmp] = model;
 
-    if (*index == 7)
+    if (*index < 7) {
+        (*tmp)++;
+    }
+    else {
+        (*tmp)--;
+    }
+
+    if (++*index == 15)
     {
         //if animation is done give one back for a step to the next animation (see readme.txt main folder!!!)
+        *index = 0;
+        *tmp = 0;
         return 1;
     }
     else
@@ -230,7 +320,7 @@ uint8_t cube_expand_2(cube *data, uint8_t *index, uint8_t, *tmp, uint8_t *time)
     }
 }
 
-uint8_t cube_expand_1(cube *data, uint8_t *index, uint8_t, *tmp, uint8_t *time)
+uint8_t cube_expand_1(cube *data, uint8_t *index, uint8_t *tmp, uint8_t *time)
 {
     uint8_t i = 0;
     uint8_t model = 0x80;
@@ -238,28 +328,37 @@ uint8_t cube_expand_1(cube *data, uint8_t *index, uint8_t, *tmp, uint8_t *time)
     cube_clear(data);
 
     model = 0x80;
-    model >>= *index;
+    model >>= *tmp;
     model |= 0x80;
 
-    for (i = 1; i < *index; i++)
+    for (i = 1; i < *tmp; i++)
     {
         data->layer_d[0].row[i] = model;
-        data->layer_d[*index].row[i] = model;
+        data->layer_d[*tmp].row[i] = model;
         data->layer_d[i].row[0] = model;
-        data->layer_d[i].row[*index] = model;
+        data->layer_d[i].row[*tmp] = model;
     }
 
     model = 0xFF;
-    model -= (1 << (7-*index) - 1);
+    model -= ((1 << (7-*tmp)) - 1);
     
-    data->layer_d[*index].row[0] = model;
-    data->layer_d[*index].row[*index] = model;
+    data->layer_d[*tmp].row[0] = model;
+    data->layer_d[*tmp].row[*tmp] = model;
     data->layer_d[0].row[0] = model;
-    data->layer_d[0].row[*index] = model;
+    data->layer_d[0].row[*tmp] = model;
 
-    if (*index == 7)
+    if (*index < 7) {
+        (*tmp)++;
+    }
+    else {
+        (*tmp)--;
+    }
+
+    if (++*index == 15)
     {
         //if animation is done give one back for a step to the next animation (see readme.txt main folder!!!)
+        *index = 0;
+        *tmp = 0;
         return 1;
     }
     else
