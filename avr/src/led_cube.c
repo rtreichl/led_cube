@@ -46,32 +46,34 @@ int main(void)
 		
     uart_puts("ATI0\r");
     uart1_puts("Hallo UART");
+	
+		data.layer_d[0].row[3] =0x18;
+		data.layer_d[0].row[4] =0x18;
+
+	
+		data.layer_d[1].row[3] =0x18;
+		data.layer_d[1].row[4] =0x18;
+
+	
     while(1)
     {
-        tlc_put(&data);
-        if (count2 >= 40)
+        
+		if (count2 >= 40)
         {
-            PORTB ^= 1;
             count2 = 0;
-			cube_expand(&data, count, 0);
-            if (count == 7)
-            {
-				
-                d = 1;
-            }
-            if (count == 0)
-            {
-                d = 0;
-            }
-            if (d)
-            {
-				count--;
-            }
-            else
-            {
-                count++;
-            }
+			cube_lift(&data, 1);
         }
+		
+		tlc_put(&data);
+		if (count2 >= 40)
+		{
+			count2 = 0;
+			cube_lift(&data, 0);
+		}
+		tlc_put(&data);
+		
+		
+		/*
         c = uart_getc();
         if ( !(c & UART_NO_DATA) )
         {
@@ -85,6 +87,7 @@ int main(void)
             //OCR0B = c1;
             uart_putc(c1);
         }
+		*/
     }
 }
 

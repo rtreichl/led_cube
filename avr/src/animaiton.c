@@ -3,11 +3,101 @@
  *
  * Created: 27.07.2014 15:17:38
  *  Author: Richi
+ *
+ * 31.07.2014 - cube_rotate - Cube mit richtungsvorgabe rotieren lassen
+ *
  */ 
 
 #include <avr/io.h>
 #include <include/tlc.h>
 #include <include/animation.h>
+
+uint8_t cube_rotate(cube *data, uint8_t steps, uint8_t direction, uint8_t axis, uint8_t *time)
+/*
+ * cube_rotate
+ *
+ * Created: 31.07.2014 xx:xx:xx
+ *  Author: Ralf
+ *  steps - steps*90°=rotation
+ *	direction - 0=clockwise 1=counterclockwise
+ *	axis - 0=top-view-axis, 1=side-view-axis, 2=front-view-axis
+ *	time - 
+ *	
+ */ 
+{
+	uint8_t i = 0;
+	uint16_t temp = 0;
+	uint16_t safe[3] = {0};
+
+	//saving 
+	for (i=0;i<3;i++)
+	{
+		safe[i] = data->layer_d[0].tlc[i];
+	}
+	
+	//shift nr.1
+	for (i=0;i<3;i++)
+	{
+		temp = data->layer_d[0].row[i] & 0x10;		//überprüfe zu verschiebenes Bit
+		data->layer_d[0].row[i] &= ~temp;			//lösche altes Bit
+		temp >>=temp;								//verschiebe Bit
+		data->layer_d[0].row[i] |= temp;			//setze verschobenes Bit
+	}
+	for (i=4;i<7;i++)
+	{
+		temp = data->layer_d[0].row[i] & 0x8;		//überprüfe zu verschiebenes Bit
+		data->layer_d[0].row[i] &= ~temp;			//lösche altes Bit
+		temp <<=temp;								//verschiebe Bit
+		data->layer_d[0].row[i] |= temp;			//setze verschobenes Bit
+	}
+	tlc_put(&data);
+
+	//shift nr.2
+	for (i=0;i<2;i++)
+	{
+		temp = data->layer_d[0].row[i] & 0x20;		//überprüfe zu verschiebenes Bit
+		data->layer_d[0].row[i] &= ~temp;			//lösche altes Bit
+		temp >>=temp;								//verschiebe Bit
+		data->layer_d[0].row[i] |= temp;			//setze verschobenes Bit
+	}
+	for (i=5;i<7;i++)
+	{
+		temp = data->layer_d[0].row[i] & 0x4;		//überprüfe zu verschiebenes Bit
+		data->layer_d[0].row[i] &= ~temp;			//lösche altes Bit
+		temp <<=temp;								//verschiebe Bit
+		data->layer_d[0].row[i] |= temp;			//setze verschobenes Bit
+	}
+	tlc_put(&data);
+
+	//shift nr.3
+	for (i=0;i<1;i++)
+	{
+		temp = data->layer_d[0].row[i] & 0x40;		//überprüfe zu verschiebenes Bit
+		data->layer_d[0].row[i] &= ~temp;			//lösche altes Bit
+		temp >>=temp;								//verschiebe Bit
+		data->layer_d[0].row[i] |= temp;			//setze verschobenes Bit
+	}
+	for (i=6;i<7;i++)
+	{
+		temp = data->layer_d[0].row[i] & 0x2;		//überprüfe zu verschiebenes Bit
+		data->layer_d[0].row[i] &= ~temp;			//lösche altes Bit
+		temp <<=temp;								//verschiebe Bit
+		data->layer_d[0].row[i] |= temp;			//setze verschobenes Bit
+	}
+	tlc_put(&data);
+
+	//shift nr.4	
+		temp = data->layer_d[0].row[0] & 0x80;		//überprüfe zu verschiebenes Bit
+		data->layer_d[0].row[i] &= ~temp;			//lösche altes Bit
+		temp >>=temp;								//verschiebe Bit
+		data->layer_d[0].row[i] |= temp;			//setze verschobenes Bit
+
+		temp = data->layer_d[0].row[7] & 0x1;		//überprüfe zu verschiebenes Bit
+		data->layer_d[0].row[i] &= ~temp;			//lösche altes Bit
+		temp <<=temp;								//verschiebe Bit
+		data->layer_d[0].row[i] |= temp;			//setze verschobenes Bit
+	tlc_put(&data);
+}
 
 uint8_t cube_expand(cube *data, uint8_t index, uint8_t *time)
 {
@@ -55,4 +145,34 @@ uint8_t cube_clear(cube *data)
 		data->layer_f[i] = 0;
 	}
 	return 1;
+}
+
+uint8_t cube_lift(cube *data, uint8_t upordown)
+{
+	//upordown == 1 up , == 0 down
+	uint64_t templayer=0;
+	
+	if(upordown==1) {
+		templayer = data->layer_f[0];
+		data->layer_f[0] = data->layer_f[1];
+		data->layer_f[1] = data->layer_f[2];
+		data->layer_f[2] = data->layer_f[3];
+		data->layer_f[3] = data->layer_f[4];
+		data->layer_f[4] = data->layer_f[5];
+		data->layer_f[5] = data->layer_f[6];
+		data->layer_f[6] = data->layer_f[7];
+		data->layer_f[7] = templayer;
+	}
+	else {
+		templayer = data->layer_f[7];
+		data->layer_f[7] = data->layer_f[6];
+		data->layer_f[6] = data->layer_f[5];
+		data->layer_f[5] = data->layer_f[4];
+		data->layer_f[4] = data->layer_f[3];
+		data->layer_f[3] = data->layer_f[2];
+		data->layer_f[2] = data->layer_f[1];
+		data->layer_f[1] = data->layer_f[0];
+		data->layer_f[0] = templayer;
+	}
+	return 1;	
 }
