@@ -176,3 +176,76 @@ uint8_t cube_lift(cube *data, uint8_t upordown)
 	}
 	return 1;	
 }
+
+
+
+uint8_t cube_slidesidewards(cube *data,  uint8_t leftorright)
+{
+	//leftorright == 1 left , == 0 right
+	uint8_t i = 0;
+	uint8_t temprow=0;
+	
+	if(leftorright==1) {
+		for (i = 0; i <= 7; i++) {
+			temprow = data->layer_d[i].row[7];
+			data->layer_d[i].row[7] = data->layer_d[i].row[6];
+			data->layer_d[i].row[6] = data->layer_d[i].row[5];
+			data->layer_d[i].row[5] = data->layer_d[i].row[4];
+			data->layer_d[i].row[4] = data->layer_d[i].row[3];
+			data->layer_d[i].row[3] = data->layer_d[i].row[2];
+			data->layer_d[i].row[2] = data->layer_d[i].row[1];
+			data->layer_d[i].row[1] = data->layer_d[i].row[0];
+			data->layer_d[i].row[0] = temprow;
+		}
+	}
+	else {
+		for (i = 0; i <= 7; i++) {
+			temprow = data->layer_d[i].row[0];
+			data->layer_d[i].row[0] = data->layer_d[i].row[1];
+			data->layer_d[i].row[1] = data->layer_d[i].row[2];
+			data->layer_d[i].row[2] = data->layer_d[i].row[3];
+			data->layer_d[i].row[3] = data->layer_d[i].row[4];
+			data->layer_d[i].row[4] = data->layer_d[i].row[5];
+			data->layer_d[i].row[5] = data->layer_d[i].row[6];
+			data->layer_d[i].row[6] = data->layer_d[i].row[7];
+			data->layer_d[i].row[7] = temprow;
+		}
+	}
+
+	return 1;
+}
+
+uint8_t cube_slidebackwards(cube *data,  uint8_t frontorback)
+{
+	//frontorback == 1 front , == 0 back
+	uint8_t i = 0;
+	uint8_t temprow=0;
+	
+	if(frontorback==1) {
+		for (i = 0; i <= 7; i++) {
+			temprow = data->layer_d[i].row[7];
+			data->layer_d[i].row[7] = data->layer_d[i].row[6];
+			data->layer_d[i].row[6] = data->layer_d[i].row[5];
+			data->layer_d[i].row[5] = data->layer_d[i].row[4];
+			data->layer_d[i].row[4] = data->layer_d[i].row[3];
+			data->layer_d[i].row[3] = data->layer_d[i].row[2];
+			data->layer_d[i].row[2] = data->layer_d[i].row[1];
+			data->layer_d[i].row[1] = data->layer_d[i].row[0];
+			data->layer_d[i].row[0] = temprow;
+		}
+	}
+	else {
+		for (i = 0; i <= 7; i++) {
+			temprow = data->layer_d[i].row[0];
+			data->layer_d[i].row[0] = data->layer_d[i].row[1];
+			data->layer_d[i].row[1] = data->layer_d[i].row[2];
+			data->layer_d[i].row[2] = data->layer_d[i].row[3];
+			data->layer_d[i].row[3] = data->layer_d[i].row[4];
+			data->layer_d[i].row[4] = data->layer_d[i].row[5];
+			data->layer_d[i].row[5] = data->layer_d[i].row[6];
+			data->layer_d[i].row[6] = data->layer_d[i].row[7];
+			data->layer_d[i].row[7] = temprow;
+		}
+	}
+	return 1;
+}

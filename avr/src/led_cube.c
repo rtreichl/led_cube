@@ -26,8 +26,8 @@ volatile uint8_t count2 = 0;
 
 int main(void)
 {
-    unsigned int c = 0, c1 = 0;
-    unsigned char count = 0, d = 0;
+    //unsigned int c = 0, c1 = 0;
+    //unsigned char count = 0;
     TCCR0A = (1 << COM0B1) | (1 << WGM00);
     TCCR0B = (1 << CS02);// | (1 << CS00);
     TCCR2A = (1 << WGM21);
@@ -61,17 +61,18 @@ int main(void)
 		if (count2 >= 40)
         {
             count2 = 0;
-			cube_lift(&data, 1);
+			cube_lift(&data, 0);
         }
 		
 		tlc_put(&data);
+
+		
 		if (count2 >= 40)
 		{
 			count2 = 0;
-			cube_lift(&data, 0);
+			cube_slidebackwards(&data, 1);
 		}
 		tlc_put(&data);
-		
 		
 		/*
         c = uart_getc();
