@@ -22,11 +22,14 @@
 
 //extern cube data2;
 
-volatile uint8_t count2 = 0;
+extern volatile uint8_t count2 = 0;
+
+uint8_t delay_ralf(cube *data, uint8_t time);
 
 int main(void)
 {
-    //unsigned int c = 0, c1 = 0;
+    uint8_t i = 0;
+	uint8_t steptime = 20;
     //unsigned char count = 0;
     TCCR0A = (1 << COM0B1) | (1 << WGM00);
     TCCR0B = (1 << CS02);// | (1 << CS00);
@@ -47,33 +50,50 @@ int main(void)
     uart_puts("ATI0\r");
     uart1_puts("Hallo UART");
 	
-		data.layer_d[0].row[3] =0x18;
-		data.layer_d[0].row[4] =0x18;
-
-	
-		data.layer_d[1].row[3] =0x18;
-		data.layer_d[1].row[4] =0x18;
+		data.layer_d[0].row[0] =0x03;
+		data.layer_d[0].row[1] =0x03;
+		data.layer_d[1].row[0] =0x03;
+		data.layer_d[1].row[1] =0x03;
 
 	
     while(1)
     {
-        
-		if (count2 >= 40)
-        {
-            count2 = 0;
-			cube_lift(&data, 0);
-        }
-		
-		tlc_put(&data);
-
-		
-		if (count2 >= 40)
+		for (i=0;i<=5;i++)
 		{
-			count2 = 0;
-			cube_slidebackwards(&data, 1);
+			delay_ralf(&data, steptime);
+			cube_lift(&data, 0);
+			tlc_put(&data);
 		}
-		tlc_put(&data);
-		
+		for (i=0;i<=5;i++)
+		{
+			delay_ralf(&data, steptime);
+			cube_slidebackwards(&data, 1);
+			tlc_put(&data);
+		}
+		for (i=0;i<=5;i++)
+		{
+			delay_ralf(&data, steptime);
+			cube_slidesidewards(&data, 0);
+			tlc_put(&data);
+		}
+		for (i=0;i<=5;i++)
+		{
+			delay_ralf(&data, steptime);
+			cube_slidebackwards(&data, 0);
+			tlc_put(&data);
+		}
+		for (i=0;i<=5;i++)
+		{
+			delay_ralf(&data, steptime);
+			cube_lift(&data, 1);
+			tlc_put(&data);
+		}
+		for (i=0;i<=5;i++)
+		{
+			delay_ralf(&data, steptime);
+			cube_slidesidewards(&data, 1);
+			tlc_put(&data);
+		}
 		/*
         c = uart_getc();
         if ( !(c & UART_NO_DATA) )
@@ -100,3 +120,13 @@ ISR (TIMER2_COMPA_vect) {
 //Overflows 40
 //for 33ms or 30fps
 //for 10ms Overflow 12
+
+uint8_t delay_ralf(cube *data, uint8_t time)
+{
+	while (count2<=time)
+	{
+		tlc_put(data);
+	}
+	count2 = 0;
+	return 1;
+}
