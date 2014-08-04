@@ -29,7 +29,7 @@ uint8_t delay_ralf(cube *data, uint8_t time);
 int main(void)
 {
     uint8_t i = 0;
-	uint8_t j = 5;
+	uint8_t j = 0;
 	uint8_t steptime = 10;
     //unsigned char count = 0;
     TCCR0A = (1 << COM0B1) | (1 << WGM00);
@@ -51,15 +51,63 @@ int main(void)
     uart_puts("ATI0\r");
     uart1_puts("Hallo UART");
 	
+		
+
+
+
+	
+	
+    while(1)
+    {
+		if (j==0) {
+			j=5;
+			cube_clear(&data);
+			data.layer_d[0].tlc[3] =0x1000; //one
+			data.layer_d[1].tlc[3] =0x1800;
+			data.layer_d[2].tlc[3] =0x1400;
+			data.layer_d[3].tlc[3] =0x1200;
+			data.layer_d[4].tlc[3] =0x1000;
+			data.layer_d[5].tlc[3] =0x1000;
+			data.layer_d[6].tlc[3] =0x1000;
+			data.layer_d[7].tlc[3] =0x1000;
+			for (i=0;i<=j;i++) {
+				delay_ralf(&data, 40);
+				cube_slidebackwards(&data, 0);
+			}
+			cube_clear(&data);
+			data.layer_d[0].tlc[3] =0x1800; //two
+			data.layer_d[1].tlc[3] =0x2400;
+			data.layer_d[2].tlc[3] =0x2000;
+			data.layer_d[3].tlc[3] =0x1000;
+			data.layer_d[4].tlc[3] =0x0800;
+			data.layer_d[5].tlc[3] =0x0400;
+			data.layer_d[6].tlc[3] =0x7E00;
+			data.layer_d[7].tlc[3] =0x0000;
+			for (i=0;i<=j;i++) {
+				delay_ralf(&data, 40);
+				cube_slidebackwards(&data, 0);
+			}
+			cube_clear(&data);
+			data.layer_d[0].tlc[3] =0x1800;//three
+			data.layer_d[1].tlc[3] =0x2400;
+			data.layer_d[2].tlc[3] =0x2000;
+			data.layer_d[3].tlc[3] =0x1000;
+			data.layer_d[4].tlc[3] =0x2000;
+			data.layer_d[5].tlc[3] =0x2000;
+			data.layer_d[6].tlc[3] =0x2400;
+			data.layer_d[7].tlc[3] =0x1800;
+
+			for (i=0;i<=j;i++) {
+				delay_ralf(&data, 40);
+				cube_slidebackwards(&data, 0);
+			}
+			cube_clear(&data);
+		}
+		
 		data.layer_d[0].row[0] =0x03;
 		data.layer_d[0].row[1] =0x03;
 		data.layer_d[1].row[0] =0x03;
 		data.layer_d[1].row[1] =0x03;
-
-	
-    while(1)
-    {
-		
 		for (i=0;i<=j;i++)
 		{
 			delay_ralf(&data, steptime);
@@ -92,10 +140,7 @@ int main(void)
 		}
 		j--;
 		
-		if (j==0)
-		{
-			j=5;
-		}
+
 		
 		/*
         c = uart_getc();
