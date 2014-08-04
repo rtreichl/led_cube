@@ -29,7 +29,8 @@ uint8_t delay_ralf(cube *data, uint8_t time);
 int main(void)
 {
     uint8_t i = 0;
-	uint8_t steptime = 20;
+	uint8_t j = 5;
+	uint8_t steptime = 10;
     //unsigned char count = 0;
     TCCR0A = (1 << COM0B1) | (1 << WGM00);
     TCCR0B = (1 << CS02);// | (1 << CS00);
@@ -58,42 +59,44 @@ int main(void)
 	
     while(1)
     {
-		for (i=0;i<=5;i++)
+		
+		for (i=0;i<=j;i++)
 		{
 			delay_ralf(&data, steptime);
 			cube_lift(&data, 0);
-			tlc_put(&data);
 		}
-		for (i=0;i<=5;i++)
+		for (i=0;i<=j;i++)
 		{
 			delay_ralf(&data, steptime);
 			cube_slidebackwards(&data, 1);
-			tlc_put(&data);
 		}
-		for (i=0;i<=5;i++)
+		for (i=0;i<=j;i++)
 		{
 			delay_ralf(&data, steptime);
 			cube_slidesidewards(&data, 0);
-			tlc_put(&data);
 		}
-		for (i=0;i<=5;i++)
+		for (i=0;i<=j;i++)
 		{
 			delay_ralf(&data, steptime);
 			cube_slidebackwards(&data, 0);
-			tlc_put(&data);
 		}
-		for (i=0;i<=5;i++)
+		for (i=0;i<=j;i++)
 		{
 			delay_ralf(&data, steptime);
 			cube_lift(&data, 1);
-			tlc_put(&data);
 		}
-		for (i=0;i<=5;i++)
+		for (i=0;i<=j;i++)
 		{
 			delay_ralf(&data, steptime);
 			cube_slidesidewards(&data, 1);
-			tlc_put(&data);
 		}
+		j--;
+		
+		if (j==0)
+		{
+			j=5;
+		}
+		
 		/*
         c = uart_getc();
         if ( !(c & UART_NO_DATA) )
