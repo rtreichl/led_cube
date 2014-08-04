@@ -10,6 +10,18 @@
 #include <include/animation.h>
 #include <stdlib.h>
 
+const funcPtrProgram animation_func = {
+    cube_expand_1,
+    cube_expand_2,
+    cube_expand_3,
+    cube_expand_4,
+    cube_layer_shift_front_back,
+    cube_layer_shift_left_right,
+    cube_layer_shift_top_bottom,
+    cube_rocket_explode
+};
+
+const uint8_t animation_counts = NUM(animation_func);
 
 uint8_t cube_layer_shift_front_back(cube *data, uint8_t *index, uint8_t *tmp, uint8_t *time)
 {
@@ -26,24 +38,7 @@ uint8_t cube_layer_shift_front_back(cube *data, uint8_t *index, uint8_t *tmp, ui
         }
     }
 
-    if (*index < 7) {
-        (*tmp)++;
-    }
-    else {
-        (*tmp)--;
-    }
-
-    if (++*index == 15)
-    {
-        //if animation is done give one back for a step to the next animation (see readme.txt main folder!!!)
-        *index = 0;
-        *tmp = 0;
-        return 1;
-    }
-    else
-    {
-        return 0;
-    }
+    return cube_animation_control(index, tmp, 15, 7);
 }
 
 uint8_t cube_layer_shift_top_bottom(cube *data, uint8_t *index, uint8_t *tmp, uint8_t *time)
@@ -57,24 +52,7 @@ uint8_t cube_layer_shift_top_bottom(cube *data, uint8_t *index, uint8_t *tmp, ui
         data->layer_d[*tmp].row[i] = model;
     }
 
-    if (*index < 7) {
-        (*tmp)++;
-    }
-    else {
-        (*tmp)--;
-    }
-
-    if (++*index == 15)
-    {
-        //if animation is done give one back for a step to the next animation (see readme.txt main folder!!!)
-        *index = 0;
-        *tmp = 0;
-        return 1;
-    }
-    else
-    {
-        return 0;
-    }
+    return cube_animation_control(index, tmp, 15, 7);
 }
 
 uint8_t cube_layer_shift_left_right(cube *data, uint8_t *index, uint8_t *tmp, uint8_t *time)
@@ -87,25 +65,7 @@ uint8_t cube_layer_shift_left_right(cube *data, uint8_t *index, uint8_t *tmp, ui
         data->layer_d[i].row[*tmp] = model;
     }
 
-    if (*index < 7) {
-        (*tmp)++;
-    }
-    else {
-        (*tmp)--;
-    }
-
-    if (++*index == 15)
-    {
-        //if animation is done give one back for a step to the next animation (see readme.txt main folder!!!)
-        *index = 0;
-        *tmp = 0;
-        return 1;
-    }
-    else
-    {
-        return 0;
-    }
-
+    return cube_animation_control(index, tmp, 15, 7);
 }
 
 uint8_t cube_explosion(cube *data, uint8_t *index, uint8_t *tmp, uint8_t *time)
@@ -156,17 +116,7 @@ uint8_t cube_rocket_explode(cube *data, uint8_t *index, uint8_t *tmp, uint8_t *t
         break;
     }
 
-    if (++*index == 16)
-    {
-        //if animation is done give one back for a step to the next animation (see readme.txt main folder!!!)
-        *index = 0;
-        *tmp = 0;
-        return 1;
-    }
-    else
-    {
-        return 0;
-    }
+    return cube_animation_control(index, tmp, 16, 7);
 }
 
 uint8_t clube_layer_rand(cube *data, uint8_t *index)
@@ -190,8 +140,7 @@ uint8_t cube_expand_4(cube *data, uint8_t *index, uint8_t *tmp, uint8_t *time)
     model >>= *tmp;
     model |= 0x80;
 
-    for (i = (*tmp) - 1; (int8_t)i > 0; i--)
-    {
+    for(i = (*tmp) - 1; (int8_t)i > 0; i--) {
         data->layer_d[0].row[7 - i] = model;
         data->layer_d[*tmp].row[7 - i] = model;
         data->layer_d[i].row[7] = model;
@@ -206,24 +155,7 @@ uint8_t cube_expand_4(cube *data, uint8_t *index, uint8_t *tmp, uint8_t *time)
     data->layer_d[0].row[7] = model;
     data->layer_d[0].row[7 - *tmp] = model;
 
-    if (*index < 7) {
-        (*tmp)++;
-    }
-    else {
-        (*tmp)--;
-    }
-
-    if (++*index == 15)
-    {
-        //if animation is done give one back for a step to the next animation (see readme.txt main folder!!!)
-        *index = 0;
-        *tmp = 0;
-        return 1;
-    }
-    else
-    {
-        return 0;
-    }
+    return cube_animation_control(index, tmp, 15, 7);
 }
 
 uint8_t cube_expand_3(cube *data, uint8_t *index, uint8_t *tmp, uint8_t *time)
@@ -237,8 +169,7 @@ uint8_t cube_expand_3(cube *data, uint8_t *index, uint8_t *tmp, uint8_t *time)
     model <<= *tmp;
     model |= 0x01;
 
-    for (i = (*tmp) - 1; (int8_t)i > 0; i--)
-    {
+    for(i = (*tmp) - 1; (int8_t)i > 0; i--) {
         data->layer_d[0].row[7 - i] = model;
         data->layer_d[*tmp].row[7 - i] = model;
         data->layer_d[i].row[7] = model;
@@ -253,24 +184,7 @@ uint8_t cube_expand_3(cube *data, uint8_t *index, uint8_t *tmp, uint8_t *time)
     data->layer_d[0].row[7] = model;
     data->layer_d[0].row[7 - *tmp] = model;
 
-    if (*index < 7) {
-        (*tmp)++;
-    }
-    else {
-        (*tmp)--;
-    }
-
-    if (++*index == 15)
-    {
-        //if animation is done give one back for a step to the next animation (see readme.txt main folder!!!)
-        *index = 0;
-        *tmp = 0;
-        return 1;
-    }
-    else
-    {
-        return 0;
-    }
+    return cube_animation_control(index, tmp, 15, 7);
 }
 
 uint8_t cube_expand_2(cube *data, uint8_t *index, uint8_t *tmp, uint8_t *time)
@@ -284,8 +198,7 @@ uint8_t cube_expand_2(cube *data, uint8_t *index, uint8_t *tmp, uint8_t *time)
     model <<= *tmp;
     model |= 0x01;
 
-    for (i = 1; i < *tmp; i++)
-    {
+    for(i = 1; i < *tmp; i++) {
         data->layer_d[0].row[i] = model;
         data->layer_d[*tmp].row[i] = model;
         data->layer_d[i].row[0] = model;
@@ -300,24 +213,7 @@ uint8_t cube_expand_2(cube *data, uint8_t *index, uint8_t *tmp, uint8_t *time)
     data->layer_d[0].row[0] = model;
     data->layer_d[0].row[*tmp] = model;
 
-    if (*index < 7) {
-        (*tmp)++;
-    }
-    else {
-        (*tmp)--;
-    }
-
-    if (++*index == 15)
-    {
-        //if animation is done give one back for a step to the next animation (see readme.txt main folder!!!)
-        *index = 0;
-        *tmp = 0;
-        return 1;
-    }
-    else
-    {
-        return 0;
-    }
+    return cube_animation_control(index, tmp, 15, 7);
 }
 
 uint8_t cube_expand_1(cube *data, uint8_t *index, uint8_t *tmp, uint8_t *time)
@@ -331,8 +227,7 @@ uint8_t cube_expand_1(cube *data, uint8_t *index, uint8_t *tmp, uint8_t *time)
     model >>= *tmp;
     model |= 0x80;
 
-    for (i = 1; i < *tmp; i++)
-    {
+    for(i = 1; i < *tmp; i++) {
         data->layer_d[0].row[i] = model;
         data->layer_d[*tmp].row[i] = model;
         data->layer_d[i].row[0] = model;
@@ -347,32 +242,32 @@ uint8_t cube_expand_1(cube *data, uint8_t *index, uint8_t *tmp, uint8_t *time)
     data->layer_d[0].row[0] = model;
     data->layer_d[0].row[*tmp] = model;
 
-    if (*index < 7) {
+    return cube_animation_control(index, tmp, 15, 7);
+}
+
+void cube_clear(cube *data)
+{
+	uint8_t i;
+	for(i = 0; i < 8; i++) {
+		data->layer_f[i] = 0;
+	}
+}
+
+uint8_t cube_animation_control(uint8_t *index, uint8_t *tmp, uint8_t top, uint8_t chang)
+{
+    if (*index < chang) {
         (*tmp)++;
     }
     else {
         (*tmp)--;
     }
 
-    if (++*index == 15)
-    {
+    if (++*index == top) {
         //if animation is done give one back for a step to the next animation (see readme.txt main folder!!!)
         *index = 0;
         *tmp = 0;
         return 1;
     }
-    else
-    {
-        return 0;
-    }
-}
 
-uint8_t cube_clear(cube *data)
-{
-	uint8_t i;
-	for (i = 0; i < 8; i++)
-	{
-		data->layer_f[i] = 0;
-	}
-	return 1;
+    return 0;
 }

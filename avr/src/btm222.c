@@ -30,7 +30,6 @@ uint8_t btm222_init()
     _delay_ms(1);
     if (btm222state == 0) {
         btm222_uart_init(UART_BAUD_SELECT(19200,F_CPU));
-        sei();
         btm222_uart_puts(BTM_DEFAULT_CMD);
         _delay_ms(100);
         btm222_uart_puts(BTM_STRING(BTM_ECHO_CMD, BTM_NONE_ECHO));
@@ -59,31 +58,25 @@ void btm222_conneciton(uint8_t c)
     static char btm222_income[31];
     static uint8_t btm222_count = 0;
     
-    if (btm222_count >= 31)
-    {
+    if (btm222_count >= 31) {
         btm222_count = 0;
     }
     
-    if (c != '\n')
-    {
+    if (c != '\n') {
         btm222_income[btm222_count++] = c;
         btm222_income[btm222_count] = 0;
-        if (btm222_count >= 7);
-        {
-            if((!strncmp("CONNECT", btm222_income, 7)))
-            {
+        if (btm222_count >= 7) {
+            if((!strncmp("CONNECT", btm222_income, 7))) {
                 _delay_ms(200);
                 btm222_uart_puts("Welcome!\r\n");
                 btm222_count = 0;
             }
-            if((!strncmp("DISCONNECT", btm222_income, 9)))
-            {
+            if((!strncmp("DISCONNECT", btm222_income, 9))) {
                 btm222_count = 0;
             }
         }
     }
-    else
-    {
+    else {
         btm222_count = 0;
     }
     
