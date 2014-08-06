@@ -18,10 +18,56 @@ const funcPtrProgram animation_func = {
     cube_layer_shift_front_back,
     cube_layer_shift_left_right,
     cube_layer_shift_top_bottom,
-    cube_rocket_explode
+    cube_rocket_explode,
+    cube_sine_wave_side,
+    cube_sine_wave_diagonal
 };
 
+const uint8_t sine_wave[10] = {0x30, 0x40, 0x80, 0x40, 0x30, 0x0C, 0x02, 0x01,  0x02, 0x0C};
+
 const uint8_t animation_counts = NUM(animation_func);
+
+uint8_t sine_wave_func(uint8_t index)
+{
+    return sine_wave[index % (sizeof(sine_wave) / sizeof(uint8_t))];
+}
+
+uint8_t cube_sine_wave_side(cube *data, uint8_t *index, uint8_t *tmp, uint8_t *time)
+{
+    uint8_t i, j;
+
+    cube_clear(data);
+
+    for(j = 0; j < 8; j++) {
+        for(i = 0; i < 8; i++) {
+            if ((1 << i) & sine_wave_func(j  + *tmp)) {
+                data->layer_d[i].row[j] = 0xFF;
+            }
+        }
+    }
+
+    return cube_animation_control(index, tmp, 50, 50);;
+}
+
+uint8_t cube_sine_wave_diagonal(cube *data, uint8_t *index, uint8_t *tmp, uint8_t *time)
+{
+    uint8_t i, j, k;
+
+    cube_clear(data);
+
+    for(j = 0; j < 8; j++) {
+        for(i = 0; i < 8; i++) {
+            for(k = 0; k < 8; k++)
+            {
+                if ((1 << i) & sine_wave_func(j + k + *tmp)) {
+                    data->layer_d[i].row[j] |= (1 << k);
+                }
+            }
+        }
+    }
+
+    return cube_animation_control(index, tmp, 50, 50);;
+}
 
 uint8_t cube_layer_shift_front_back(cube *data, uint8_t *index, uint8_t *tmp, uint8_t *time)
 {
