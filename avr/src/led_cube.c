@@ -38,7 +38,7 @@ int main(void)
     sei();
     btm222_init();
     uart1_init( UART_BAUD_SELECT(UART1_BAUD_RATE,F_CPU) );
-	
+
     tlc_init();
 		
     uart1_puts("Hallo UART\n");
@@ -48,7 +48,7 @@ int main(void)
         if (timer2_count >= 40) {
             timer2_count = 0;
 			if (animation_prog < animation_counts) {
-				animation_prog += animation_func[animation_prog](&animation_data, &animation_count, &animation_tmp, 0); 
+				animation_prog += animation_func[11](&animation_data, &animation_count, &animation_tmp, 0); 
 			}
 			else {
 				animation_prog = 0;

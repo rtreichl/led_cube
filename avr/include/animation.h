@@ -26,6 +26,9 @@ uint8_t cube_expand_4(cube *data, uint8_t *index, uint8_t *tmp, uint8_t *time);
 uint8_t cube_explosion(cube *data, uint8_t *index, uint8_t *tmp, uint8_t *time);
 uint8_t cube_sine_wave_side(cube *data, uint8_t *index, uint8_t *tmp, uint8_t *time);
 uint8_t cube_sine_wave_diagonal(cube *data, uint8_t *index, uint8_t *tmp, uint8_t *time);
+uint8_t cube_font_out(cube *data, uint8_t *index, uint8_t *tmp, uint8_t *time);
+uint8_t cube_message_board(cube *data, uint8_t *index, uint8_t *tmp, uint8_t *time);
+uint8_t cube_put_string(cube *data, uint8_t *index, uint8_t *tmp, uint8_t *time);
 uint8_t clube_layer_rand(cube *data, uint8_t *index);
 
 void cube_clear(cube *data);

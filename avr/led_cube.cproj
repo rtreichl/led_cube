@@ -131,7 +131,13 @@
     <Compile Include="include\animation.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="include\ascii.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\animaiton.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\ascci.c">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\led_cube.c">

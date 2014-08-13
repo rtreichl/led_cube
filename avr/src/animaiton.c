@@ -6,7 +6,9 @@
  */ 
 
 #include <avr/io.h>
+#include <include/ascii.h>
 #include <include/tlc.h>
+#include <avr/pgmspace.h>
 #include <include/animation.h>
 #include <stdlib.h>
 
@@ -20,7 +22,9 @@ const funcPtrProgram animation_func = {
     cube_layer_shift_top_bottom,
     cube_rocket_explode,
     cube_sine_wave_side,
-    cube_sine_wave_diagonal
+    cube_sine_wave_diagonal,
+    cube_message_board,
+    cube_put_string
 };
 
 const uint8_t sine_wave[10] = {0x30, 0x40, 0x80, 0x40, 0x30, 0x0C, 0x02, 0x01,  0x02, 0x0C};
@@ -30,6 +34,66 @@ const uint8_t animation_counts = NUM(animation_func);
 uint8_t sine_wave_func(uint8_t index)
 {
     return sine_wave[index % (sizeof(sine_wave) / sizeof(uint8_t))];
+}
+
+uint8_t cube_put_string(cube *data, uint8_t *index, uint8_t *tmp, uint8_t *time)
+{
+    uint8_t ch;
+    
+    ch = pgm_read_byte(&string[*index]) - 32;
+    if ((*tmp)++ < 5) {
+        cube_font_out(data, &ch, tmp, 0);
+    }
+    else {
+        if (*tmp < 8) {
+            ch = 0;
+            cube_font_out(data, &ch, tmp, 0);
+        }
+        else {
+            *tmp = 0;
+            if (pgm_read_byte(&string[++(*index)]) == 0) {
+                *index = 0;
+            }
+        }
+    }
+    return 0;
+}
+
+uint8_t cube_font_out(cube *data, uint8_t *index, uint8_t *tmp, uint8_t *time)
+{
+    uint8_t j;
+    
+    //cube_clear(data);
+    cube_message_board(data, index, tmp, time);
+
+    for(j = 0; j < 7; j++) {
+        if ((1 << (5-*tmp)) & pgm_read_byte(&font8x8[*index][j])) {
+            data->layer_d[7-j].row[0] = 0x80;
+        }
+    }
+
+    return 0;//cube_animation_control(index, tmp, 100, 100);
+}
+
+uint8_t cube_message_board(cube *data, uint8_t *index, uint8_t *tmp, uint8_t *time)
+{
+    uint8_t i, k, l;
+    cube tmp2;
+
+    memcpy(&tmp2, data, sizeof(cube));
+
+    cube_clear(data);
+
+    for (i = 0; i  < 8; i++)
+    {
+        for (k = 0, l = 7; k < 7; k++, l--) {
+            data->layer_d[i].row[k + 1] |= tmp2.layer_d[i].row[k] & 0x80;
+            data->layer_d[i].row[l - 1] |= tmp2.layer_d[i].row[l] & 0x01;
+        }
+        //data->layer_d[i].row[0] |= tmp2.layer_d[i].row[0] << 1;
+        data->layer_d[i].row[7] |= tmp2.layer_d[i].row[7] >> 1;
+    }
+    return 0;
 }
 
 uint8_t cube_sine_wave_side(cube *data, uint8_t *index, uint8_t *tmp, uint8_t *time)
