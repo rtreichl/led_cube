@@ -45,11 +45,9 @@ uint8_t cube_put_string(cube *data, uint8_t *index, uint8_t *tmp, uint8_t *time)
         cube_font_out(data, &ch, tmp, 0);
     }
     else {
-        if (*tmp < 8) {
-            ch = 0;
-            cube_font_out(data, &ch, tmp, 0);
-        }
-        else {
+		ch = 0;
+        cube_font_out(data, &ch, tmp, 0);
+		if(*tmp >= 8) {
             *tmp = 0;
             if (pgm_read_byte(&string[++(*index)]) == 0) {
                 *index = 0;
