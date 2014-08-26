@@ -24,7 +24,10 @@ const funcPtrProgram animation_func = {
     cube_sine_wave_side,
     cube_sine_wave_diagonal,
     cube_message_board,
-    cube_put_string
+    cube_put_string,
+	cube_slidebackwards,
+	cube_slidesidewards,
+	cube_lift
 };
 
 const uint8_t sine_wave[10] = {0x30, 0x40, 0x80, 0x40, 0x30, 0x0C, 0x02, 0x01,  0x02, 0x0C};
@@ -378,4 +381,122 @@ uint8_t cube_animation_control(uint8_t *index, uint8_t *tmp, uint8_t top, uint8_
     }
 
     return 0;
+}
+
+
+uint8_t cube_lift(cube *data, uint8_t *index, uint8_t *tmp, uint8_t *time)
+{
+	//upordown == 1 up , == 0 down
+	uint64_t templayer=0;
+	uint8_t upordown = 1;
+	if(upordown==1) {
+		templayer = data->layer_f[0];
+		data->layer_f[0] = data->layer_f[1];
+		data->layer_f[1] = data->layer_f[2];
+		data->layer_f[2] = data->layer_f[3];
+		data->layer_f[3] = data->layer_f[4];
+		data->layer_f[4] = data->layer_f[5];
+		data->layer_f[5] = data->layer_f[6];
+		data->layer_f[6] = data->layer_f[7];
+		data->layer_f[7] = templayer;
+	}
+	else {
+		templayer = data->layer_f[7];
+		data->layer_f[7] = data->layer_f[6];
+		data->layer_f[6] = data->layer_f[5];
+		data->layer_f[5] = data->layer_f[4];
+		data->layer_f[4] = data->layer_f[3];
+		data->layer_f[3] = data->layer_f[2];
+		data->layer_f[2] = data->layer_f[1];
+		data->layer_f[1] = data->layer_f[0];
+		data->layer_f[0] = templayer;
+	}
+	return 1;
+}
+
+
+
+uint8_t cube_slidesidewards(cube *data, uint8_t *index, uint8_t *tmp, uint8_t *time)
+{
+	//leftorright == 1 left , == 0 right
+	uint8_t i = 0, j = 0;
+	uint8_t leftorright =1; 
+	
+	if(leftorright==1) {
+		for (i = 0; i <= 7; i++) {
+			for (j = 0; j <= 7; j++) {
+				
+				if (data->layer_d[i].row[j] & 0x01) {
+					data->layer_d[i].row[j] = data->layer_d[i].row[j] >> 1;
+					data->layer_d[i].row[j] = data->layer_d[i].row[j] | 0x80;
+					
+				}
+				else {
+					data->layer_d[i].row[j] = data->layer_d[i].row[j] >> 1;
+				}
+			}
+		}
+	}
+	
+	else {
+		for (i = 0; i <= 7; i++) {
+			for (j = 0; j <= 7; j++) {
+				if (data->layer_d[i].row[j] & 0x80) {
+					data->layer_d[i].row[j] = data->layer_d[i].row[j] << 1;
+					data->layer_d[i].row[j] = data->layer_d[i].row[j] | 0x01;
+
+				}
+				else {
+					data->layer_d[i].row[j] = data->layer_d[i].row[j] << 1;
+				}
+			}
+		}
+	}
+	
+	return 1;
+}
+
+uint8_t cube_slidebackwards(cube *data, uint8_t *index, uint8_t *tmp, uint8_t *time)
+{
+	//frontorback == 1 front , == 0 back
+	uint8_t i = 0;
+	uint8_t temprow=0;
+	uint8_t frontorback = 1;
+	
+	data->layer_d[0].tlc[3] =0x1000; //one
+	data->layer_d[1].tlc[3] =0x1800;
+	data->layer_d[2].tlc[3] =0x1400;
+	data->layer_d[3].tlc[3] =0x1200;
+	data->layer_d[4].tlc[3] =0x1000;
+	data->layer_d[5].tlc[3] =0x1000;
+	data->layer_d[6].tlc[3] =0x1000;
+	data->layer_d[7].tlc[3] =0x1000;
+	
+	if(frontorback==1) {
+		for (i = 0; i <= 7; i++) {
+			temprow = data->layer_d[i].row[7];
+			data->layer_d[i].row[7] = data->layer_d[i].row[6];
+			data->layer_d[i].row[6] = data->layer_d[i].row[5];
+			data->layer_d[i].row[5] = data->layer_d[i].row[4];
+			data->layer_d[i].row[4] = data->layer_d[i].row[3];
+			data->layer_d[i].row[3] = data->layer_d[i].row[2];
+			data->layer_d[i].row[2] = data->layer_d[i].row[1];
+			data->layer_d[i].row[1] = data->layer_d[i].row[0];
+			data->layer_d[i].row[0] = temprow;
+		}
+	}
+	else {
+		for (i = 0; i <= 7; i++) {
+			temprow = data->layer_d[i].row[0];
+			data->layer_d[i].row[0] = data->layer_d[i].row[1];
+			data->layer_d[i].row[1] = data->layer_d[i].row[2];
+			data->layer_d[i].row[2] = data->layer_d[i].row[3];
+			data->layer_d[i].row[3] = data->layer_d[i].row[4];
+			data->layer_d[i].row[4] = data->layer_d[i].row[5];
+			data->layer_d[i].row[5] = data->layer_d[i].row[6];
+			data->layer_d[i].row[6] = data->layer_d[i].row[7];
+			data->layer_d[i].row[7] = temprow;
+		}
+	}
+	return 1;
 }
