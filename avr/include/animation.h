@@ -31,6 +31,7 @@ uint8_t cube_message_board(cube *data, uint8_t *index, uint8_t *tmp, uint8_t *ti
 uint8_t cube_put_string(cube *data, uint8_t *index, uint8_t *tmp, uint8_t *time);
 uint8_t clube_layer_rand(cube *data, uint8_t *index);
 uint8_t cube_lift(cube *data, uint8_t *index, uint8_t *tmp, uint8_t *time);
+uint8_t cube_line_down(cube *data, uint8_t *index, uint8_t *tmp, uint8_t *time);
 uint8_t cube_slidesidewards(cube *data, uint8_t *index, uint8_t *tmp, uint8_t *time);
 uint8_t cube_slidebackwards(cube *data, uint8_t *index, uint8_t *tmp, uint8_t *time);
 

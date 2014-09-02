@@ -27,7 +27,8 @@ const funcPtrProgram animation_func = {
     cube_put_string,
 	cube_slidebackwards,
 	cube_slidesidewards,
-	cube_lift
+	cube_lift,
+    cube_line_down
 };
 
 const uint8_t sine_wave[10] = {0x30, 0x40, 0x80, 0x40, 0x30, 0x0C, 0x02, 0x01,  0x02, 0x0C};
@@ -37,6 +38,66 @@ const uint8_t animation_counts = NUM(animation_func);
 uint8_t sine_wave_func(uint8_t index)
 {
     return sine_wave[index % (sizeof(sine_wave) / sizeof(uint8_t))];
+}
+
+uint8_t cube_line_down(cube *data, uint8_t *index, uint8_t *tmp, uint8_t *time)
+{
+    //uint8_t mov = 0;
+    uint8_t i;
+
+    if ((*index)++ % 2 == 0)
+    {
+        *tmp = rand() % 5;
+    }
+
+    for (i = 0; i < 7; i++)
+    {
+        memcpy(&(data->layer_f[i]), &(data->layer_f[i+1]), sizeof(uint64_t));
+    }
+    switch(*tmp)
+    {
+        case 0: //standstill
+        break;
+        case 1: //right
+            for (i = 0; i < 7; i++)
+            {
+                if (data->layer_d[7].row[i] != 0 && data->layer_d[7].row[i] != 0x80)
+                {
+                    data->layer_d[7].row[i] <<= 1;
+                }
+            }
+            break;
+        case 2: //forward
+            if (data->layer_d[7].row[0] == 0)
+            {
+                for (i = 0; i < 7; i++)
+                {
+                    data->layer_d[7].row[i] = data->layer_d[7].row[i+1];
+                    data->layer_d[7].row[i+1] = 0;
+                }
+            }
+            break;
+        case 3: //backward
+            if (data->layer_d[7].row[7] == 0)
+            {
+                for (i = 7; (int8_t)i > 0; i--)
+                {
+                    data->layer_d[7].row[i] = data->layer_d[7].row[i-1];
+                    data->layer_d[7].row[i-1] = 0;
+                }
+            }
+            break;
+        case 4: //left
+            for (i = 0; i < 7; i++)
+            {
+                if (data->layer_d[7].row[i] != 0 && data->layer_d[7].row[i] != 0x01)
+                {
+                    data->layer_d[7].row[i] >>= 1;
+                }
+            }
+            break;
+    }
+    *tmp = 0;
 }
 
 uint8_t cube_put_string(cube *data, uint8_t *index, uint8_t *tmp, uint8_t *time)

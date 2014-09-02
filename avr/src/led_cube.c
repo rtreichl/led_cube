@@ -40,7 +40,7 @@ int main(void)
     uart1_init( UART_BAUD_SELECT(UART1_BAUD_RATE,F_CPU) );
 
     tlc_init();
-		
+	animation_data.layer_d[7].row[4] = 0x10;
     uart1_puts("Hallo UART\n");
     while(1)
     {
@@ -48,7 +48,7 @@ int main(void)
         if (timer2_count >= 40) {
             timer2_count = 0;
 			if (animation_prog < animation_counts) {
-				animation_prog += animation_func[12](&animation_data, &animation_count, &animation_tmp, 0); 
+				animation_prog += animation_func[animation_counts-1](&animation_data, &animation_count, &animation_tmp, 0); 
 			}
 			else {
 				animation_prog = 0;
