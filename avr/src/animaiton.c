@@ -11,6 +11,30 @@
 #include <avr/pgmspace.h>
 #include <include/animation.h>
 #include <stdlib.h>
+#include <string.h>
+
+extern uint8_t timer2_count;
+
+static uint8_t cube_layer_shift_front_back(cube *data, uint8_t *index, uint8_t *tmp, uint8_t *time);
+static uint8_t cube_layer_shift_left_right(cube *data, uint8_t *index, uint8_t *tmp, uint8_t *time);
+static uint8_t cube_layer_shift_top_bottom(cube *data, uint8_t *index, uint8_t *tmp, uint8_t *time);
+static uint8_t cube_rocket_explode(cube *data, uint8_t *index, uint8_t *tmp, uint8_t *time);
+static uint8_t cube_expand_1(cube *data, uint8_t *index, uint8_t *tmp, uint8_t *time);
+static uint8_t cube_expand_2(cube *data, uint8_t *index, uint8_t *tmp, uint8_t *time);
+static uint8_t cube_expand_3(cube *data, uint8_t *index, uint8_t *tmp, uint8_t *time);
+static uint8_t cube_expand_4(cube *data, uint8_t *index, uint8_t *tmp, uint8_t *time);
+static uint8_t cube_explosion(cube *data, uint8_t *index, uint8_t *tmp, uint8_t *time);
+static uint8_t cube_sine_wave_side(cube *data, uint8_t *index, uint8_t *tmp, uint8_t *time);
+static uint8_t cube_sine_wave_diagonal(cube *data, uint8_t *index, uint8_t *tmp, uint8_t *time);
+static uint8_t cube_font_out(cube *data, uint8_t *index, uint8_t *tmp, uint8_t *time);
+static uint8_t cube_message_board(cube *data, uint8_t *index, uint8_t *tmp, uint8_t *time);
+static uint8_t cube_put_string(cube *data, uint8_t *index, uint8_t *tmp, uint8_t *time);
+static uint8_t clube_layer_rand(cube *data, uint8_t *index);
+static uint8_t cube_lift(cube *data, uint8_t *index, uint8_t *tmp, uint8_t *time);
+static uint8_t cube_line_down(cube *data, uint8_t *index, uint8_t *tmp, uint8_t *time);
+static uint8_t cube_slidesidewards(cube *data, uint8_t *index, uint8_t *tmp, uint8_t *time);
+static uint8_t cube_slidebackwards(cube *data, uint8_t *index, uint8_t *tmp, uint8_t *time);
+static uint8_t cube_rain(cube *data, uint8_t *index, uint8_t *tmp, uint8_t *time);
 
 const funcPtrProgram animation_func = {
     cube_expand_1,
@@ -23,31 +47,53 @@ const funcPtrProgram animation_func = {
     cube_rocket_explode,
     cube_sine_wave_side,
     cube_sine_wave_diagonal,
-    cube_message_board,
-    cube_put_string,
-	cube_slidebackwards,
-	cube_slidesidewards,
-	cube_lift,
-    cube_line_down
+    //cube_message_board,
+    //cube_put_string,
+	//cube_slidebackwards,
+	//cube_slidesidewards,
+	//cube_lift,
+    //cube_line_down,
+    cube_rain
 };
+
+static uint8_t animation_stats = 0; // Highest bit shows global usage state of 1 = in use and 0 = not in use.
+                                    // If function returns 1 to jump to another one the bit must be cleared else an error occur.
+
+static uint8_t animation_prog = 0;         // Stores the actual program which is shown.
+static uint8_t animation_tmp = 0;          // Stores data from an animation.
+static uint8_t animation_count = 0;        // Stores internal counter.
+static uint8_t animation_time = 40;        // Holds the actual time for animation flow.
 
 const uint8_t sine_wave[10] = {0x30, 0x40, 0x80, 0x40, 0x30, 0x0C, 0x02, 0x01,  0x02, 0x0C};
 
 const uint8_t animation_counts = NUM(animation_func);
 
-uint8_t sine_wave_func(uint8_t index)
+inline void cube_play_animation(cube *data)
 {
-    return sine_wave[index % (sizeof(sine_wave) / sizeof(uint8_t))];
+    if (timer2_count >= animation_time) {
+        timer2_count = 0;
+        if (animation_prog < animation_counts) {
+            animation_prog += animation_func[animation_prog](data, &animation_count, &animation_tmp, &animation_time);
+        }
+        else {
+            animation_prog = 0;
+            timer2_count = 40;
+        }
+    }
 }
 
 uint8_t cube_line_down(cube *data, uint8_t *index, uint8_t *tmp, uint8_t *time)
 {
-    //uint8_t mov = 0;
+    static uint8_t mov = 0;
     uint8_t i;
 
     if ((*index)++ % 2 == 0)
     {
-        *tmp = rand() % 5;
+        do
+        {
+            *tmp = rand() % 5;
+        } while(*tmp == mov || *tmp == 0);
+        mov = *tmp;
     }
 
     for (i = 0; i < 7; i++)
@@ -98,6 +144,28 @@ uint8_t cube_line_down(cube *data, uint8_t *index, uint8_t *tmp, uint8_t *time)
             break;
     }
     *tmp = 0;
+    return 0;
+}
+
+uint8_t cube_rain(cube *data, uint8_t *index, uint8_t *tmp, uint8_t *time)
+{
+    int8_t i;
+    uint64_t led;
+
+    for (i = 0; i < 7; i++)
+    {
+        memcpy(&(data->layer_f[i]), &(data->layer_f[i+1]), sizeof(uint64_t));
+    }
+    i = 8;
+    data->layer_f[7] = 0;
+    while(i-- > 0)
+    {
+        led = 1;
+        led <<= rand() % 64;
+        data->layer_f[7] |= led;
+    }
+
+    return 0;
 }
 
 uint8_t cube_put_string(cube *data, uint8_t *index, uint8_t *tmp, uint8_t *time)
@@ -166,7 +234,7 @@ uint8_t cube_sine_wave_side(cube *data, uint8_t *index, uint8_t *tmp, uint8_t *t
 
     for(j = 0; j < 8; j++) {
         for(i = 0; i < 8; i++) {
-            if ((1 << i) & sine_wave_func(j  + *tmp)) {
+            if ((1 << i) & sine_wave[(j  + *tmp) % (sizeof(sine_wave) / sizeof(uint8_t))]) {
                 data->layer_d[i].row[j] = 0xFF;
             }
         }
@@ -185,7 +253,7 @@ uint8_t cube_sine_wave_diagonal(cube *data, uint8_t *index, uint8_t *tmp, uint8_
         for(i = 0; i < 8; i++) {
             for(k = 0; k < 8; k++)
             {
-                if ((1 << i) & sine_wave_func(j + k + *tmp)) {
+                if ((1 << i) & sine_wave[(j + k + *tmp) % (sizeof(sine_wave) / sizeof(uint8_t))]) {
                     data->layer_d[i].row[j] |= (1 << k);
                 }
             }
