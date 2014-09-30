@@ -20,6 +20,7 @@
 volatile uint8_t timer2_count = 0;
 static cube cube_data = {{0}};
 
+void matlab_fsm(char c, cube *data);
 
 int main(void)
 {
@@ -42,7 +43,7 @@ int main(void)
     uart_puts("Hallo UART\n");
     while(1)
     {
-        cube_play_animation(&cube_data);
+        //cube_play_animation(&cube_data);
         tlc_put(&cube_data);
         //c = uart_getc();
         /*if (!(c & UART_NO_DATA)) {
@@ -50,13 +51,13 @@ int main(void)
             btm222_conneciton(c);
             uart1_putc(c);
         }*/
-        /*c1 = uart_getc();
+        c1 = uart_getc();
         if ( !(c1 & UART_NO_DATA) )
         {
             //OCR0B = c1;
             //uart_putc(c1);
             matlab_fsm(c1, &cube_data);
-        }*/
+        }
     }
 }
 
@@ -69,3 +70,56 @@ ISR (TIMER2_COMPA_vect)
 //Overflows 40
 //for 33ms or 30fps
 //for 10ms Overflow 12
+
+void matlab_fsm(char c, cube *data)
+{
+    //TODO split mode FSM and receive FSM!!!!!
+    static char state = 0;
+    static unsigned char income = 0;
+    static char buffer[64];
+    switch (state) {
+        case 0:
+        if ((char)c == 'S') {
+			uart_putc('0');
+            state++;
+        }
+        else {
+            goto init_fault;
+        }
+        break;
+        case 1:
+        if((char)c == 'P') {
+            uart_putc('1');
+            state++;
+        }
+        else {
+            goto init_fault;
+        }
+        break;
+        case 2:
+        buffer[income++] = (char)c;
+        //TODO add time out
+        if(income == 64) {
+            income = 0;
+            state++;
+        }
+        break;
+        case 3:
+        if((char)c  != 'E') {
+            state = 0;
+            uart_putc('E');
+        }
+        else {
+            uint8_t row, colum;
+            state = 0;
+            memcpy(data, buffer, sizeof(cube));
+            uart_putc('2');
+        }
+        break;
+        default:
+        init_fault:
+        uart_putc('F');
+        state = 0;
+        break;
+    }
+}
