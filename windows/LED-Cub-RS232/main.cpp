@@ -5,6 +5,7 @@
 #include <iostream>
 #include <stdlib.h>
 #include "cube_controll.h"
+#include "cube1.h"
 
 using namespace std;
 
@@ -21,7 +22,9 @@ int main()
 
 	cube data = { 0 };
 
-	hSerial = CreateFile(	"\\\\.\\COM4",
+	cube1 tada;
+
+	/*hSerial = CreateFile(	"\\\\.\\COM4",
 							GENERIC_READ | GENERIC_WRITE,
 							0,
 							0,
@@ -63,19 +66,19 @@ int main()
 #endif
 	WriteFile(hSerial, "SSE", 3, &dwBytesWrite, NULL);
 	getchar();
-	do /*(unsigned int i = 0; i < 50; i++)*/ {
-		/*cube_set_led(i, i, i, ON, &data);
-		cube_set_led(7-i, i, i, ON, &data);
-		cube_set_led(7 - i, 7-i, i, ON, &data);
-		cube_set_led(i, 7 - i, i, ON, &data);*/
+
 		cube_rain(&data);
 		//cube_set_led(0, 7, 7, 1, &data);
 		memcpy(wrBuff, &data, sizeof(cube));
 		WriteFile(hSerial, "SP", 2, &dwBytesWrite, NULL);
 		WriteFile(hSerial, wrBuff, n, &dwBytesWrite, NULL);
 		WriteFile(hSerial, "E", 1, &dwBytesWrite, NULL);
-		Sleep(100);
+		Sleep(100);*/
+	do{
 	} while (!_kbhit());
-	CloseHandle(hSerial);
+	delete &tada;
+	do{
+	} while (!_kbhit());
+	//CloseHandle(hSerial);
 	return 0;
 }

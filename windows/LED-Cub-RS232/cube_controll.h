@@ -1,3 +1,6 @@
+#ifndef cube_controll
+#define cube_controll
+
 #include <stdint.h>
 
 #define ON TRUE
@@ -13,3 +16,5 @@ typedef union {
 
 void cube_set_led(uint8_t x, uint8_t y, uint8_t z, bool value, cube *data);
 uint8_t cube_rain(cube *data);
+
+#endif

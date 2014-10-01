@@ -1,10 +1,22 @@
 #include <stdint.h>
+#include <windows.h>
+#include <conio.h>
+#include "cube_controll.h"
+
+#define n	64
+#define com_str "\\\\.\\COM"
 
 #pragma once
 class cube1
 {
 private:
 	cube data;
+	bool connected;
+	bool cube_connect(uint8_t port_num);
+	HANDLE hSerial;
+	DCB dcbSerialParams;
+	char wrBuff[n + 1];
+	DWORD dwBytesWrite;
 public:
 	cube1(void);
 	~cube1(void);
