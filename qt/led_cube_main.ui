@@ -1,0 +1,1159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>LED_Cube_Main</class>
+ <widget class="QDialog" name="LED_Cube_Main">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>936</width>
+    <height>738</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>LED Simulator 8x8x8</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="images.qrc">
+    <normaloff>:/images/images/application_icon.png</normaloff>:/images/images/application_icon.png</iconset>
+  </property>
+  <widget class="QLabel" name="edge_4">
+   <property name="geometry">
+    <rect>
+     <x>415</x>
+     <y>0</y>
+     <width>4</width>
+     <height>1000</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Edge</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="edge_3">
+   <property name="geometry">
+    <rect>
+     <x>780</x>
+     <y>-1</y>
+     <width>4</width>
+     <height>1000</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Edge</string>
+   </property>
+  </widget>
+  <widget class="QGraphicsView" name="LED_Selection_View">
+   <property name="geometry">
+    <rect>
+     <x>420</x>
+     <y>45</y>
+     <width>360</width>
+     <height>360</height>
+    </rect>
+   </property>
+   <property name="verticalScrollBarPolicy">
+    <enum>Qt::ScrollBarAlwaysOff</enum>
+   </property>
+   <property name="horizontalScrollBarPolicy">
+    <enum>Qt::ScrollBarAlwaysOff</enum>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label1">
+   <property name="geometry">
+    <rect>
+     <x>1</x>
+     <y>700</y>
+     <width>70</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>PosX</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label2">
+   <property name="geometry">
+    <rect>
+     <x>1</x>
+     <y>720</y>
+     <width>70</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>PosY</string>
+   </property>
+  </widget>
+  <widget class="QGraphicsView" name="ProgramNumber_View">
+   <property name="geometry">
+    <rect>
+     <x>420</x>
+     <y>435</y>
+     <width>360</width>
+     <height>178</height>
+    </rect>
+   </property>
+   <property name="verticalScrollBarPolicy">
+    <enum>Qt::ScrollBarAlwaysOn</enum>
+   </property>
+   <property name="horizontalScrollBarPolicy">
+    <enum>Qt::ScrollBarAlwaysOff</enum>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Button_Save">
+   <property name="geometry">
+    <rect>
+     <x>862</x>
+     <y>408</y>
+     <width>75</width>
+     <height>81</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Button_Holdtime">
+   <property name="geometry">
+    <rect>
+     <x>784</x>
+     <y>574</y>
+     <width>152</width>
+     <height>81</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Button_Back">
+   <property name="geometry">
+    <rect>
+     <x>784</x>
+     <y>657</y>
+     <width>76</width>
+     <height>81</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Button_Delete_All">
+   <property name="geometry">
+    <rect>
+     <x>862</x>
+     <y>657</y>
+     <width>75</width>
+     <height>81</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Button_Level_1">
+   <property name="geometry">
+    <rect>
+     <x>419</x>
+     <y>0</y>
+     <width>48</width>
+     <height>48</height>
+    </rect>
+   </property>
+   <property name="autoFillBackground">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Button_Level_2">
+   <property name="geometry">
+    <rect>
+     <x>464</x>
+     <y>0</y>
+     <width>49</width>
+     <height>48</height>
+    </rect>
+   </property>
+   <property name="autoFillBackground">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Button_Level_3">
+   <property name="geometry">
+    <rect>
+     <x>509</x>
+     <y>0</y>
+     <width>48</width>
+     <height>48</height>
+    </rect>
+   </property>
+   <property name="autoFillBackground">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Button_Level_4">
+   <property name="geometry">
+    <rect>
+     <x>554</x>
+     <y>0</y>
+     <width>48</width>
+     <height>48</height>
+    </rect>
+   </property>
+   <property name="autoFillBackground">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Button_Level_5">
+   <property name="geometry">
+    <rect>
+     <x>599</x>
+     <y>0</y>
+     <width>48</width>
+     <height>48</height>
+    </rect>
+   </property>
+   <property name="autoFillBackground">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Button_Level_6">
+   <property name="geometry">
+    <rect>
+     <x>644</x>
+     <y>0</y>
+     <width>48</width>
+     <height>48</height>
+    </rect>
+   </property>
+   <property name="autoFillBackground">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Button_Level_7">
+   <property name="geometry">
+    <rect>
+     <x>689</x>
+     <y>0</y>
+     <width>48</width>
+     <height>48</height>
+    </rect>
+   </property>
+   <property name="autoFillBackground">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Button_Level_8">
+   <property name="geometry">
+    <rect>
+     <x>734</x>
+     <y>0</y>
+     <width>46</width>
+     <height>48</height>
+    </rect>
+   </property>
+   <property name="autoFillBackground">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Button_New">
+   <property name="geometry">
+    <rect>
+     <x>784</x>
+     <y>491</y>
+     <width>152</width>
+     <height>81</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QGraphicsView" name="LED_Selection_Top_View">
+   <property name="geometry">
+    <rect>
+     <x>784</x>
+     <y>52</y>
+     <width>152</width>
+     <height>152</height>
+    </rect>
+   </property>
+   <property name="verticalScrollBarPolicy">
+    <enum>Qt::ScrollBarAlwaysOff</enum>
+   </property>
+   <property name="horizontalScrollBarPolicy">
+    <enum>Qt::ScrollBarAlwaysOff</enum>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Button_Right_View">
+   <property name="geometry">
+    <rect>
+     <x>784</x>
+     <y>202</y>
+     <width>152</width>
+     <height>32</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QGraphicsView" name="LED_Selection_Right_View">
+   <property name="geometry">
+    <rect>
+     <x>784</x>
+     <y>253</y>
+     <width>152</width>
+     <height>152</height>
+    </rect>
+   </property>
+   <property name="verticalScrollBarPolicy">
+    <enum>Qt::ScrollBarAlwaysOff</enum>
+   </property>
+   <property name="horizontalScrollBarPolicy">
+    <enum>Qt::ScrollBarAlwaysOff</enum>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Button_Top_View">
+   <property name="geometry">
+    <rect>
+     <x>784</x>
+     <y>0</y>
+     <width>152</width>
+     <height>32</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Button_Top_Level_2">
+   <property name="geometry">
+    <rect>
+     <x>802</x>
+     <y>33</y>
+     <width>20</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Button_Top_Level_3">
+   <property name="geometry">
+    <rect>
+     <x>821</x>
+     <y>33</y>
+     <width>20</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Button_Top_Level_4">
+   <property name="geometry">
+    <rect>
+     <x>840</x>
+     <y>33</y>
+     <width>20</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Button_Top_Level_5">
+   <property name="geometry">
+    <rect>
+     <x>859</x>
+     <y>33</y>
+     <width>20</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Button_Top_Level_6">
+   <property name="geometry">
+    <rect>
+     <x>878</x>
+     <y>33</y>
+     <width>20</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Button_Top_Level_7">
+   <property name="geometry">
+    <rect>
+     <x>897</x>
+     <y>33</y>
+     <width>20</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Button_Top_Level_8">
+   <property name="geometry">
+    <rect>
+     <x>916</x>
+     <y>33</y>
+     <width>20</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Button_Right_Level_2">
+   <property name="geometry">
+    <rect>
+     <x>802</x>
+     <y>234</y>
+     <width>20</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Button_Right_Level_3">
+   <property name="geometry">
+    <rect>
+     <x>821</x>
+     <y>234</y>
+     <width>20</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Button_Right_Level_4">
+   <property name="geometry">
+    <rect>
+     <x>840</x>
+     <y>234</y>
+     <width>20</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Button_Right_Level_5">
+   <property name="geometry">
+    <rect>
+     <x>859</x>
+     <y>234</y>
+     <width>20</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Button_Right_Level_6">
+   <property name="geometry">
+    <rect>
+     <x>878</x>
+     <y>234</y>
+     <width>20</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Button_Right_Level_7">
+   <property name="geometry">
+    <rect>
+     <x>897</x>
+     <y>234</y>
+     <width>20</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Button_Right_Level_8">
+   <property name="geometry">
+    <rect>
+     <x>916</x>
+     <y>234</y>
+     <width>20</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Button_Top_Level_1">
+   <property name="geometry">
+    <rect>
+     <x>784</x>
+     <y>33</y>
+     <width>19</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Button_Check_Accept_Part_for_Next_Part">
+   <property name="geometry">
+    <rect>
+     <x>600</x>
+     <y>618</y>
+     <width>90</width>
+     <height>60</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Button_Right_Level_1">
+   <property name="geometry">
+    <rect>
+     <x>784</x>
+     <y>234</y>
+     <width>19</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QGraphicsView" name="LED_Cube_3D_View">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>50</y>
+     <width>410</width>
+     <height>445</height>
+    </rect>
+   </property>
+   <property name="verticalScrollBarPolicy">
+    <enum>Qt::ScrollBarAlwaysOff</enum>
+   </property>
+   <property name="horizontalScrollBarPolicy">
+    <enum>Qt::ScrollBarAlwaysOff</enum>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Button_Play">
+   <property name="geometry">
+    <rect>
+     <x>149</x>
+     <y>550</y>
+     <width>47</width>
+     <height>47</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Button_PlayLoop">
+   <property name="geometry">
+    <rect>
+     <x>209</x>
+     <y>550</y>
+     <width>47</width>
+     <height>47</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Button_Move_To_A_Layer_Behind">
+   <property name="geometry">
+    <rect>
+     <x>690</x>
+     <y>618</y>
+     <width>90</width>
+     <height>60</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Button_Unfill_Clicked_View">
+   <property name="geometry">
+    <rect>
+     <x>510</x>
+     <y>618</y>
+     <width>90</width>
+     <height>60</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Button_Fill_Clicked_View">
+   <property name="geometry">
+    <rect>
+     <x>419</x>
+     <y>618</y>
+     <width>91</width>
+     <height>60</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="edge_6">
+   <property name="geometry">
+    <rect>
+     <x>419</x>
+     <y>405</y>
+     <width>518</width>
+     <height>4</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Edge</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="edge_7">
+   <property name="geometry">
+    <rect>
+     <x>419</x>
+     <y>614</y>
+     <width>362</width>
+     <height>4</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Edge</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Button_Load">
+   <property name="geometry">
+    <rect>
+     <x>784</x>
+     <y>409</y>
+     <width>76</width>
+     <height>80</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Button_KabinettRight3DView">
+   <property name="geometry">
+    <rect>
+     <x>46</x>
+     <y>3</y>
+     <width>47</width>
+     <height>47</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Button_KabinettLeft3DView">
+   <property name="geometry">
+    <rect>
+     <x>138</x>
+     <y>3</y>
+     <width>47</width>
+     <height>47</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Button_IsometricRight3DView">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>3</y>
+     <width>47</width>
+     <height>47</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Button_IsometricLeft3DView">
+   <property name="geometry">
+    <rect>
+     <x>92</x>
+     <y>3</y>
+     <width>47</width>
+     <height>47</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Button_Mirror_View">
+   <property name="geometry">
+    <rect>
+     <x>600</x>
+     <y>678</y>
+     <width>90</width>
+     <height>60</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Button_Move_To_A_Layer_InFront">
+   <property name="geometry">
+    <rect>
+     <x>690</x>
+     <y>678</y>
+     <width>90</width>
+     <height>60</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Button_Rotate_Left_View">
+   <property name="geometry">
+    <rect>
+     <x>419</x>
+     <y>678</y>
+     <width>91</width>
+     <height>60</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Button_Rotate_Right_View">
+   <property name="geometry">
+    <rect>
+     <x>510</x>
+     <y>678</y>
+     <width>90</width>
+     <height>60</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="edge_8">
+   <property name="geometry">
+    <rect>
+     <x>419</x>
+     <y>431</y>
+     <width>362</width>
+     <height>4</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Edge</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Button_Select_Front_View">
+   <property name="geometry">
+    <rect>
+     <x>419</x>
+     <y>409</y>
+     <width>60</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Button_Select_Top_View">
+   <property name="geometry">
+    <rect>
+     <x>479</x>
+     <y>409</y>
+     <width>60</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Button_Select_Right_View">
+   <property name="geometry">
+    <rect>
+     <x>539</x>
+     <y>409</y>
+     <width>60</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QSlider" name="Slider_SpeedRegulation">
+   <property name="geometry">
+    <rect>
+     <x>122</x>
+     <y>645</y>
+     <width>160</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="minimum">
+    <number>0</number>
+   </property>
+   <property name="maximum">
+    <number>200</number>
+   </property>
+   <property name="value">
+    <number>100</number>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Horizontal</enum>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_1x">
+   <property name="geometry">
+    <rect>
+     <x>194</x>
+     <y>671</y>
+     <width>16</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>1x</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_2x">
+   <property name="geometry">
+    <rect>
+     <x>267</x>
+     <y>671</y>
+     <width>16</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>2x</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_05x">
+   <property name="geometry">
+    <rect>
+     <x>113</x>
+     <y>671</y>
+     <width>28</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>0.5x</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="SecondsString_label">
+   <property name="geometry">
+    <rect>
+     <x>784</x>
+     <y>613</y>
+     <width>120</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>SecondsString</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Button_Return">
+   <property name="geometry">
+    <rect>
+     <x>896</x>
+     <y>613</y>
+     <width>40</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Button_key_1">
+   <property name="geometry">
+    <rect>
+     <x>784</x>
+     <y>409</y>
+     <width>50</width>
+     <height>50</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Button_key_2">
+   <property name="geometry">
+    <rect>
+     <x>835</x>
+     <y>409</y>
+     <width>50</width>
+     <height>50</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Button_key_3">
+   <property name="geometry">
+    <rect>
+     <x>886</x>
+     <y>409</y>
+     <width>50</width>
+     <height>50</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Button_key_4">
+   <property name="geometry">
+    <rect>
+     <x>784</x>
+     <y>460</y>
+     <width>50</width>
+     <height>50</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Button_key_5">
+   <property name="geometry">
+    <rect>
+     <x>835</x>
+     <y>460</y>
+     <width>50</width>
+     <height>50</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Button_key_6">
+   <property name="geometry">
+    <rect>
+     <x>886</x>
+     <y>460</y>
+     <width>50</width>
+     <height>50</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Button_key_7">
+   <property name="geometry">
+    <rect>
+     <x>784</x>
+     <y>511</y>
+     <width>50</width>
+     <height>50</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Button_key_8">
+   <property name="geometry">
+    <rect>
+     <x>835</x>
+     <y>511</y>
+     <width>50</width>
+     <height>50</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Button_key_9">
+   <property name="geometry">
+    <rect>
+     <x>886</x>
+     <y>511</y>
+     <width>50</width>
+     <height>50</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Button_key_0">
+   <property name="geometry">
+    <rect>
+     <x>835</x>
+     <y>562</y>
+     <width>50</width>
+     <height>50</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Button_Accept_SecondsString">
+   <property name="geometry">
+    <rect>
+     <x>784</x>
+     <y>645</y>
+     <width>152</width>
+     <height>46</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Button_Seconds">
+   <property name="geometry">
+    <rect>
+     <x>784</x>
+     <y>562</y>
+     <width>50</width>
+     <height>50</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Button_MilliSeconds">
+   <property name="geometry">
+    <rect>
+     <x>886</x>
+     <y>562</y>
+     <width>50</width>
+     <height>50</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Button_Start_From_Part">
+   <property name="geometry">
+    <rect>
+     <x>149</x>
+     <y>606</y>
+     <width>107</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Button_Abort_SecondSelection">
+   <property name="geometry">
+    <rect>
+     <x>784</x>
+     <y>692</y>
+     <width>152</width>
+     <height>46</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="Current_Seconds_label">
+   <property name="geometry">
+    <rect>
+     <x>843</x>
+     <y>623</y>
+     <width>91</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Current Seconds</string>
+   </property>
+  </widget>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources>
+  <include location="images.qrc"/>
+ </resources>
+ <connections/>
+</ui>
